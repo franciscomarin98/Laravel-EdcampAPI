@@ -23,10 +23,8 @@ class CreateAlumnosTable extends Migration
             $table->boolean('is_ecuadorian');
             $table->boolean('assistance')->default(false);
             $table->string('phone', 15);
-            $table->unsignedInteger('empresa_id');
-            $table->foreign('empresa_id')
-                ->references('id')
-                ->on('empresas');
+            $table->unsignedBigInteger('empresa_id');
+            $table->foreign('empresa_id')->references('id')->on('empresas');
         });
     }
 

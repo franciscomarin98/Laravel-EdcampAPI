@@ -16,8 +16,8 @@ class CreatePagosTable extends Migration
         Schema::create('pagos', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedInteger('alumno_id');
-            $table->unsignedInteger('precio_id');
+            $table->unsignedBigInteger('alumno_id');
+            $table->unsignedBigInteger('precio_id');
             $table->foreign('alumno_id')->references('id')->on('alumnos');
             $table->foreign('precio_id')->references('id')->on('precios');
         });
