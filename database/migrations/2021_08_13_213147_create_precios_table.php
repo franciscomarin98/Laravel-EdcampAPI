@@ -16,9 +16,9 @@ class CreatePreciosTable extends Migration
         Schema::create('precios', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->enum('type', ['Becado', 'Pre-venta', 'Regular']);
+            $table->enum('type', ['Becado', 'Pre-venta', 'Regular'])->unique();
             $table->double('cost',8, 2);
-            $table->boolean('active');
+            $table->boolean('active')->default(true);
         });
     }
 
