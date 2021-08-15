@@ -6,9 +6,8 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
-use Illuminate\Validation\ValidationException;
 
-class PrecioStoreRequest extends FormRequest
+class PrecioUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,17 +27,17 @@ class PrecioStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required|unique:precios,type|in:Becado,Pre-venta,Regular',
-            'cost' => 'required|numeric',
+            'type' => 'in:Becado,Pre-venta,Regular',
+            'cost' => 'numeric',
             'active' => 'boolean'
         ];
     }
 
-
+    /**
+     * @param Validator $validator
+     */
     protected function failedValidation(Validator $validator)
     {
-        //$errors = (new ValidationException($validator))->errors();
-
         throw new HttpResponseException(
             response()->json([
                 'status' => false,
@@ -47,5 +46,4 @@ class PrecioStoreRequest extends FormRequest
             ], Response::HTTP_BAD_REQUEST)
         );
     }
-
 }
