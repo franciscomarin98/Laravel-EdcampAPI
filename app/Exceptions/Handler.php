@@ -52,5 +52,13 @@ class Handler extends ExceptionHandler
                 'message' => 'There are no query results for the resource you have requested',
             ], $e->getStatusCode());
         }
+
+        if($e instanceof HttpException) {
+            return response()->json([
+                'status' => false,
+                'code' => $e->getStatusCode(),
+                'message' => $e->getMessage(),
+            ], $e->getStatusCode());
+        }
     }
 }

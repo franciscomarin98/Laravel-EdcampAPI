@@ -6,6 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class PrecioUpdateRequest extends FormRequest
 {
@@ -27,7 +28,8 @@ class PrecioUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'in:Becado,Pre-venta,Regular',
+            'type' => ['in:Becado,Pre-venta,Regular', Rule::unique('precios', 'type')
+                ->ignore($this->precio),],
             'cost' => 'numeric',
             'active' => 'boolean'
         ];
