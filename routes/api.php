@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\PrecioController;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,4 +22,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 */
 
-Route::apiResource('/precios', \App\Http\Controllers\PrecioController::class);
+Route::apiResource('/precios', PrecioController::class);
+
+Route::fallback(function(){
+    return response()->json([
+        'status' => false,
+        'code' => Response::HTTP_NOT_FOUND,
+        'message' => 'The HTTP request made could not be found or is temporarily disabled. If error persists, contact admin@info.com'
+    ], 404);
+});
