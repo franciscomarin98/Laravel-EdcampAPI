@@ -2,84 +2,88 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmpresaStoreRequest;
+use App\Http\Requests\EmpresaUpdateRequest;
 use App\Models\Empresa;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
 class EmpresaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function create()
+    public function index(): JsonResponse
     {
-        //
+        $data = Empresa::all();
+        return response()->json([
+            'status' => 'true',
+            'code' => Response::HTTP_OK,
+            'data' => $data
+        ],Response::HTTP_OK);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Empresa  $empresa
-     * @return \Illuminate\Http\Response
+     * @param EmpresaStoreRequest $request
+     * @return JsonResponse
      */
-    public function show(Empresa $empresa)
+    public function store(EmpresaStoreRequest $request): JsonResponse
     {
-        //
+        $empresa = Empresa::create($request->validated());
+        return response()->json([
+            'status' => true,
+            'code' => Response::HTTP_CREATED,
+            'message' => 'Price has been added successfully',
+            'data' => $empresa,
+        ], Response::HTTP_CREATED);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Empresa  $empresa
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Empresa $empresa)
-    {
-        //
-    }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Empresa  $empresa
-     * @return \Illuminate\Http\Response
+     * @param Empresa $empresa
+     * @return JsonResponse
      */
-    public function update(Request $request, Empresa $empresa)
+    public function show(Empresa $empresa): JsonResponse
     {
-        //
+        return response()->json([
+            'status' => true,
+            'code' => Response::HTTP_OK,
+            'data' => $empresa
+        ], Response::HTTP_OK);
     }
 
+
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Empresa  $empresa
-     * @return \Illuminate\Http\Response
+     * @param EmpresaUpdateRequest $request
+     * @param Empresa $empresa
+     * @return JsonResponse
      */
-    public function destroy(Empresa $empresa)
+    public function update(EmpresaUpdateRequest $request, Empresa $empresa): JsonResponse
     {
-        //
+        $empresa->update($request->validated());
+        return response()->json([
+            'status' => true,
+            'code' => Response::HTTP_OK,
+            'message' => 'Company information has been updated successfully',
+            'data' => $empresa
+        ], Response::HTTP_OK);
+    }
+
+
+    /**
+     * @param Empresa $empresa
+     * @return JsonResponse
+     */
+    public function destroy(Empresa $empresa): JsonResponse
+    {
+        $empresa->delete();
+        return response()->json([
+            'status' => true,
+            'code' => Response::HTTP_OK,
+            'message' => 'Company has been deleted successfully',
+        ], Response::HTTP_OK);
     }
 }

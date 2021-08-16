@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
         return response()->json([
             'status' => false,
             'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
-            'message' => 'Server error',
+            'message' => $e->getMessage(),
         ], Response::HTTP_INTERNAL_SERVER_ERROR);
 
     }
