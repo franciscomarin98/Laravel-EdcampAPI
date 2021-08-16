@@ -38,14 +38,14 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->renderable(function(Throwable $e, $request) {
+        $this->renderable(function (Throwable $e, $request) {
             return $this->handleException($request, $e);
         });
     }
 
     private function handleException($request, Throwable $e): JsonResponse
     {
-        if($e instanceof NotFoundHttpException) {
+        if ($e instanceof NotFoundHttpException) {
             return response()->json([
                 'status' => false,
                 'code' => $e->getStatusCode(),
@@ -53,12 +53,19 @@ class Handler extends ExceptionHandler
             ], $e->getStatusCode());
         }
 
-        if($e instanceof HttpException) {
+        if ($e instanceof HttpException) {
             return response()->json([
                 'status' => false,
                 'code' => $e->getStatusCode(),
                 'message' => $e->getMessage(),
             ], $e->getStatusCode());
         }
+
+        return response()->json([
+            'status' => false,
+            'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            'message' => 'Server error',
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+
     }
 }

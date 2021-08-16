@@ -36,6 +36,16 @@ class PrecioUpdateRequest extends FormRequest
     }
 
     /**
+     * @return string[]
+     */
+    public function messages()
+    {
+        return [
+            'type.in' => 'The type entered is not valid, it is only accepted: Becado,Pre-venta,Regular ',
+        ];
+    }
+
+    /**
      * @param Validator $validator
      */
     protected function failedValidation(Validator $validator)
