@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Response;
 
 class PagoStoreRequest extends FormRequest
 {
@@ -24,7 +27,35 @@ class PagoStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'alumno_id' => 'required|exists:alumnos,id',
+            'precio_id' => 'required|exists:precios,id',
+            'observation' => 'string'
         ];
     }
+
+    /**
+     * @param Validator $validator
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'status' => false,
+                'code' => Response::HTTP_BAD_REQUEST,
+                'errors' => $validator->errors()
+            ], Response::HTTP_BAD_REQUEST)
+        );
+    }
+
+    /**
+     * @return string[]
+     */
+    public function messages(): array
+    {
+        return [
+            'alumno_id.exists' => 'The selected student does not currently exist in the database.',
+            'precio_id.exists' => 'The selected price type does not currently exist in the database.'
+        ];
+    }
+
 }

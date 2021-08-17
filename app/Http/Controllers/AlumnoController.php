@@ -6,7 +6,6 @@ use App\Http\Requests\AlumnoStoreRequest;
 use App\Http\Requests\AlumnoUpdateRequest;
 use App\Models\Alumno;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class AlumnoController extends Controller

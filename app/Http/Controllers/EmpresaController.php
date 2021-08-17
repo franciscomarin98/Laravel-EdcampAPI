@@ -35,7 +35,7 @@ class EmpresaController extends Controller
         return response()->json([
             'status' => true,
             'code' => Response::HTTP_CREATED,
-            'message' => 'Price has been added successfully',
+            'message' => 'Company has been added successfully',
             'data' => $empresa,
         ], Response::HTTP_CREATED);
     }

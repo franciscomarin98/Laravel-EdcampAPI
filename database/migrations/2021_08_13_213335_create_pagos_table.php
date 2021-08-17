@@ -18,6 +18,7 @@ class CreatePagosTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('alumno_id');
             $table->unsignedBigInteger('precio_id');
+            $table->string('observation')->nullable();
             $table->foreign('alumno_id')->references('id')->on('alumnos');
             $table->foreign('precio_id')->references('id')->on('precios');
         });

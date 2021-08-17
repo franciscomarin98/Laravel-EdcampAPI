@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PagoStoreRequest;
+use App\Http\Requests\PagoUpdateRequest;
 use App\Models\Pago;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class PagoController extends Controller
@@ -26,12 +27,18 @@ class PagoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param PagoStoreRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(PagoStoreRequest $request): JsonResponse
     {
-        //
+        $pago = Pago::create($request->validated());
+        return response()->json([
+            'status' => true,
+            'code' => Response::HTTP_CREATED,
+            'message' => 'Successful registration payment',
+            'data' => $pago
+        ], Response::HTTP_CREATED);
     }
 
 
@@ -51,13 +58,19 @@ class PagoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Pago $pago
-     * @return \Illuminate\Http\Response
+     * @param PagoUpdateRequest $request
+     * @param Pago $pago
+     * @return JsonResponse
      */
-    public function update(Request $request, Pago $pago)
+    public function update(PagoUpdateRequest $request, Pago $pago): JsonResponse
     {
-        //
+        $pago->update($request->validated());
+        return response()->json([
+            'status' => true,
+            'code' => Response::HTTP_OK,
+            'message' => 'Registration payment information has been updated successfully',
+            'data' => $pago
+        ], Response::HTTP_OK);
     }
 
     /**

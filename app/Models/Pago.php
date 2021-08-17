@@ -11,7 +11,8 @@ class Pago extends Model
 
     protected $fillable = [
         'alumno_id',
-        'precio_id'
+        'precio_id',
+        'observation'
     ];
 
     public function alumno()
