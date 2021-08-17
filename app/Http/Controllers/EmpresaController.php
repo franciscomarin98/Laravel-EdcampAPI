@@ -7,7 +7,6 @@ use App\Http\Requests\EmpresaUpdateRequest;
 use App\Models\Empresa;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Http\Request;
 
 class EmpresaController extends Controller
 {

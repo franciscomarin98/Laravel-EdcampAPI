@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\PagoController;
 use App\Http\Controllers\PrecioController;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResource('/precios', PrecioController::class);
 Route::apiResource('/empresas', EmpresaController::class);
+Route::apiResource('/alumnos', AlumnoController::class);
+Route::apiResource('/pagos', PagoController::class);
 
 Route::fallback(function(){
     return response()->json([
