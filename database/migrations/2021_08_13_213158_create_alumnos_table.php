@@ -19,7 +19,7 @@ class CreateAlumnosTable extends Migration
             $table->string('name', 255);
             $table->string('last_name', 255);
             $table->string('email', 255)->unique();
-            $table->enum('status', ['Paid', 'Pending'])->default('Pending');
+            $table->enum('payment_status', ['Paid', 'Pending'])->default('Pending');
             $table->boolean('is_ecuadorian');
             $table->boolean('assistance')->default(false);
             $table->string('phone', 15);

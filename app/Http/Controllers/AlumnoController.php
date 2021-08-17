@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AlumnoStoreRequest;
+use App\Http\Requests\AlumnoUpdateRequest;
 use App\Models\Alumno;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
 
 class AlumnoController extends Controller
 {
@@ -25,21 +27,25 @@ class AlumnoController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param AlumnoStoreRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(AlumnoStoreRequest $request): JsonResponse
     {
-        //
+        $alumno = Alumno::create($request->validated());
+        return response()->json([
+            'status' => true,
+            'code' => Response::HTTP_CREATED,
+            'message' => 'Student has been added successfully',
+            'data' => $alumno,
+        ], Response::HTTP_CREATED);
     }
 
     /**
      * @param Alumno $alumno
      * @return JsonResponse
      */
-    public function show(Alumno $alumno):JsonResponse
+    public function show(Alumno $alumno): JsonResponse
     {
         return response()->json([
             'status' => true,
@@ -50,15 +56,19 @@ class AlumnoController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Alumno $alumno
-     * @return \Illuminate\Http\Response
+     * @param AlumnoUpdateRequest $request
+     * @param Alumno $alumno
+     * @return JsonResponse
      */
-    public function update(Request $request, Alumno $alumno)
+    public function update(AlumnoUpdateRequest $request, Alumno $alumno): JsonResponse
     {
-        //
+        $alumno->update($request->validated());
+        return response()->json([
+            'status' => true,
+            'code' => Response::HTTP_OK,
+            'message' => 'Student information has been updated successfully',
+            'data' => $alumno
+        ], Response::HTTP_OK);
     }
 
 

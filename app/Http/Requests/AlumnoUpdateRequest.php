@@ -6,15 +6,16 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
-class PrecioStoreRequest extends FormRequest
+class AlumnoUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,12 +25,17 @@ class PrecioStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'type' => 'required|unique:precios,type|in:Becado,Pre-venta,Regular',
-            'cost' => 'required|numeric',
-            'active' => 'boolean'
+            'name' => 'string',
+            'last_name' => 'string',
+            'email' => Rule::unique('alumnos', 'email')->ignore($this->alumno),
+            'payment_status' => 'in:Paid,Pending',
+            'is_ecuadorian' => 'boolean',
+            'assistance' => 'boolean',
+            'phone' => 'string',
+            'empresa_id' => 'exists:empresas,id'
         ];
     }
 
@@ -39,7 +45,8 @@ class PrecioStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'type.in' => 'The type selected is not valid, it is only accepted: Becado,Pre-venta,Regular ',
+            'empresa_id.exists' => 'The selected company does not currently exist in the database.',
+            'payment_status.in' => 'The selected payment status is invalid, only accepted: ' ."Paid ". 'or '. "Pending."
         ];
     }
 
@@ -56,5 +63,4 @@ class PrecioStoreRequest extends FormRequest
             ], Response::HTTP_BAD_REQUEST)
         );
     }
-
 }
