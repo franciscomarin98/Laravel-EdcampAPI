@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlumnoController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\PrecioController;
@@ -18,16 +19,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group([
+    'prefix' => 'auth'
+], function () {
+    Route::post('login', [AuthController::class, 'login'])->name('auth.login');
+    Route::post('register', [AuthController::class, 'register'])->name('auth.register');
 });
-*/
 
-Route::apiResource('/precios', PrecioController::class);
-Route::apiResource('/empresas', EmpresaController::class);
-Route::apiResource('/alumnos', AlumnoController::class);
-Route::apiResource('/pagos', PagoController::class);
+Route::group([
+    'middleware' => 'auth:api'
+], function() {
+    Route::apiResource('/precios', PrecioController::class);
+    Route::apiResource('/empresas', EmpresaController::class);
+    Route::apiResource('/alumnos', AlumnoController::class);
+    Route::apiResource('/pagos', PagoController::class);
+});
+
+
 
 Route::fallback(function(){
     return response()->json([
