@@ -2,11 +2,13 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -49,7 +51,7 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'status' => false,
                 'code' => $e->getStatusCode(),
-                'message' => 'There are no query results for the resource you have requested',
+                'message' => 'There are no query results for the resource you have requested.',
             ], $e->getStatusCode());
         }
 
@@ -59,6 +61,14 @@ class Handler extends ExceptionHandler
                 'code' => $e->getStatusCode(),
                 'message' => $e->getMessage(),
             ], $e->getStatusCode());
+        }
+
+        if ($e instanceof AuthenticationException) {
+            return response()->json([
+                'status' => false,
+                'code' => Response::HTTP_UNAUTHORIZED,
+                'message' => $e->getMessage(),
+            ],Response::HTTP_UNAUTHORIZED);
         }
 
         return response()->json([

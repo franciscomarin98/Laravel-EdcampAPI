@@ -41,6 +41,6 @@ Route::fallback(function(){
     return response()->json([
         'status' => false,
         'code' => Response::HTTP_NOT_FOUND,
-        'message' => 'The HTTP request made could not be found or is temporarily disabled. If error persists, contact admin@info.com'
+        'message' => 'The HTTP request made could not be found or is temporarily disabled. If error persists, contact admin@info.com.'
     ], 404);
 });
