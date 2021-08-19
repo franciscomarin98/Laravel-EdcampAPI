@@ -34,20 +34,6 @@ class PagoUpdateRequest extends FormRequest
     }
 
     /**
-     * @param Validator $validator
-     */
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(
-            response()->json([
-                'status' => false,
-                'code' => Response::HTTP_BAD_REQUEST,
-                'errors' => $validator->errors()
-            ], Response::HTTP_BAD_REQUEST)
-        );
-    }
-
-    /**
      * @return string[]
      */
     public function messages(): array

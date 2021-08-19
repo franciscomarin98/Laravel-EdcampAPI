@@ -6,9 +6,9 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -55,12 +55,12 @@ class Handler extends ExceptionHandler
             ], $e->getStatusCode());
         }
 
-        if ($e instanceof HttpException) {
+        if ($e instanceof ValidationException) {
             return response()->json([
                 'status' => false,
-                'code' => $e->getStatusCode(),
-                'message' => $e->getMessage(),
-            ], $e->getStatusCode());
+                'code' => Response::HTTP_BAD_REQUEST,
+                'errors' => $e->validator->getMessageBag(),
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         if ($e instanceof AuthenticationException) {
@@ -68,7 +68,15 @@ class Handler extends ExceptionHandler
                 'status' => false,
                 'code' => Response::HTTP_UNAUTHORIZED,
                 'message' => $e->getMessage(),
-            ],Response::HTTP_UNAUTHORIZED);
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($e instanceof HttpException) {
+            return response()->json([
+                'status' => false,
+                'code' => $e->getStatusCode(),
+                'message' => $e->getMessage(),
+            ], $e->getStatusCode());
         }
 
         return response()->json([
